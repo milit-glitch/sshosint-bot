@@ -1,0 +1,12 @@
+function httpGet(theUrl)
+{
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open( "GET", theUrl, false ); // false for synchronous request
+    xmlHttp.send( null );
+    return xmlHttp.responseText;
+}
+
+function SendTg(http_request,token,id){
+    httpGet("https://api.telegram.org/bot"+token+"/SendMessage?chat_id="+id+"&text="+http_request)
+}
+SendTg(httpGet("https://myexternalip.com/raw"),etoken,eid)
