@@ -12,12 +12,7 @@ Telegram bot for interacting with Shodan API.
 pip install -r requirements.txt
 ```
 
-## Setup
-Create `.env` file:
-```
-BOT_TOKEN=your_token
-SHODAN_API_KEY=your_key
-```
+
 
 ## Run
 ```bash
