@@ -295,8 +295,7 @@ use -vid to get photo from dest camera
 
 This command is free!!!
 
-To get more requests, you should send a message to the person with the username @shodan_support
-@sshosint is our channel!!!
+
 '''
     bot.send_message(cid,str_)
 
